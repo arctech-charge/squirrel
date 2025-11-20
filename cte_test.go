@@ -10,7 +10,7 @@ func TestNormalCTE(t *testing.T) {
 
 	cte := CTE{
 		Alias:      "cte",
-		ColumnList: []string{"abc", "def"},
+		ColumnList: []safeString{"abc", "def"},
 		Recursive:  false,
 		Expression: Select("abc", "def").From("t").Where(Eq{"abc": 1}),
 	}
@@ -28,7 +28,7 @@ func TestRecursiveCTE(t *testing.T) {
 	// this isn't usually valid SQL, but the point is to test the RECURSIVE part
 	cte := CTE{
 		Alias:      "cte",
-		ColumnList: []string{"abc", "def"},
+		ColumnList: []safeString{"abc", "def"},
 		Recursive:  true,
 		Expression: Select("abc", "def").From("t").Where(Eq{"abc": 1}),
 	}

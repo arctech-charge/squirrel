@@ -288,13 +288,13 @@ func (b SelectBuilder) Options(options ...safeString) SelectBuilder {
 }
 
 // With adds a non-recursive CTE to the query.
-func (b SelectBuilder) With(alias string, expr Sqlizer) SelectBuilder {
-	return b.WithCTE(CTE{Alias: alias, ColumnList: []string{}, Recursive: false, Expression: expr})
+func (b SelectBuilder) With(alias safeString, expr Sqlizer) SelectBuilder {
+	return b.WithCTE(CTE{Alias: alias, ColumnList: []safeString{}, Recursive: false, Expression: expr})
 }
 
 // WithRecursive adds a recursive CTE to the query.
-func (b SelectBuilder) WithRecursive(alias string, expr Sqlizer) SelectBuilder {
-	return b.WithCTE(CTE{Alias: alias, ColumnList: []string{}, Recursive: true, Expression: expr})
+func (b SelectBuilder) WithRecursive(alias safeString, expr Sqlizer) SelectBuilder {
+	return b.WithCTE(CTE{Alias: alias, ColumnList: []safeString{}, Recursive: true, Expression: expr})
 }
 
 // WithCTE adds an arbitrary Sqlizer to the query.

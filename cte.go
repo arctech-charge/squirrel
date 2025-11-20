@@ -2,7 +2,6 @@ package squirrel
 
 import (
 	"bytes"
-	"strings"
 )
 
 // CTE represents a single common table expression. They are composed of an alias, a few optional components, and a data manipulation statement, though exactly what sort of statement depends on the database system you're using. MySQL, for example, only allows SELECT statements; others, like PostgreSQL, permit INSERTs, UPDATEs, and DELETEs.
@@ -10,8 +9,8 @@ import (
 // * a list of columns
 // * the keyword RECURSIVE, the use of which may place additional constraints on the data manipulation statement
 type CTE struct {
-	Alias      string
-	ColumnList []string
+	Alias      safeString
+	ColumnList []safeString
 	Recursive  bool
 	Expression Sqlizer
 }
@@ -19,17 +18,22 @@ type CTE struct {
 // ToSql builds the SQL for a CTE
 func (c CTE) ToSql() (string, []interface{}, error) {
 
-	var buf bytes.Buffer
+	buf := &bytes.Buffer{}
 
 	if c.Recursive {
 		buf.WriteString("RECURSIVE ")
 	}
 
-	buf.WriteString(c.Alias)
+	buf.WriteString(string(c.Alias))
 
 	if len(c.ColumnList) > 0 {
 		buf.WriteString("(")
-		buf.WriteString(strings.Join(c.ColumnList, ", "))
+		for idx, val := range c.ColumnList {
+			if idx != 0 {
+				buf.WriteString(", ")
+			}
+			buf.WriteString(string(val))
+		}
 		buf.WriteString(")")
 	}
 
