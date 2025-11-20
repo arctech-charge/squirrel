@@ -505,7 +505,7 @@ func TestSelectBuilderUnionToSql(t *testing.T) {
 	unionAll := Select("count(true) as C").
 		From("table1").
 		Where(Eq{"column1": []string{"test", "tester"}}).
-		UnionAllSelect(Select("count(true) as C").From("table2").Where(Select("true").Prefix("NOT EXISTS(").Suffix(")").From("table3").Where("id=table2.column3")))
+		UnionAllSelect(Select("count(true) as C").From("table2").Where(Select("true").Prefix("NOT EXISTS(").Suffix(")").From("table3").Where(Expr("id=table2.column3"))))
 	sql, args, err = unionAll.ToSql()
 	assert.NoError(t, err)
 

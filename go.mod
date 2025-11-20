@@ -1,4 +1,4 @@
-module github.com/bored-engineer/safe-squirrel
+module github.com/gideontonkinson/squirrel
 
 go 1.14
 
